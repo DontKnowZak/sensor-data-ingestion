@@ -16,6 +16,8 @@
     "eslint": "^3.11.1"
   },
   "dependencies": {
-    "express": "^4.14.0"
+    "async": "^2.1.4",
+    "express": "^4.14.0",
+    "rethinkdb": "^2.3.3"
   }
 }
