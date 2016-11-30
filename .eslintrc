@@ -1,0 +1,42 @@
+{
+    "extends": "eslint:recommended",
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "block-spacing": 2,
+        "keyword-spacing": 0,
+        "space-before-blocks": 2,
+        "object-curly-spacing": [2, "always", { "objectsInObjects": false , "arraysInObjects": false}],
+        "arrow-spacing": 2,
+        "no-multi-spaces": 0,
+        "no-underscore-dangle": 0,
+        "no-mixed-spaces-and-tabs": 2,
+        "block-scoped-var": 2,
+        "no-inner-declarations": 2,
+        "valid-jsdoc": 1,
+        "no-irregular-whitespace": 2,
+        "spaced-comment": [1, "always"],
+        "no-undef": 2,
+        "no-unused-vars": 2,
+        "comma-dangle": [2, "always-multiline"],
+        "semi": 2,
+        "max-len": [2, { "code": 100, "ignoreUrls": true }],
+        "no-console": 2,
+        "no-debugger": 2,
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "eqeqeq": 2,
+        "no-useless-call": 1,
+        "strict": [2, "global"],
+        "eol-last": 2,
+        "quotes": [2, "double"]
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "globalReturn": true
+        }
+    }
+}
