@@ -5,10 +5,25 @@ var express = require("express");
 var app = express();
 var r = require("rethinkdb");
 var config = require("./config.js");
+var bodyParser = require('body-parser');
 
-app.put("/data", function (req, res) {
-  res.send("Got a PUT request");
-});
+app.use(bodyParser.json());
+
+app.put("/data", insertInTable);
+
+function insertInTable(req, res, next) {
+  var dataPoint = req.body;
+
+  console.dir(dataPoint);
+
+  r.table('sensorDataPoints').insert(dataPoint, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
+    if(err) {
+      return next(err);
+    }
+
+    res.json(result.changes[0].new_val);
+  });
+}
 
 function startExpress(connection) {
   app._rdbConn = connection;
@@ -32,7 +47,6 @@ async.waterfall([
     });
   },
   function createTable(connection, callback) {
-    //Create the table if needed.
     r.tableList().contains("sensorDataPoints").do(function(containsTable) {
       return r.branch(
         containsTable,
