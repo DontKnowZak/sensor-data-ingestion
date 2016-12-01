@@ -11,7 +11,7 @@ module.exports = {
     client.messages.create({
       to: recipient,
       from: twilioNumber,
-      body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+      body: "Warning: Sensor threshold reached",
     }, function(err, message) {
       throw(message.sid);
     });
