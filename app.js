@@ -66,12 +66,12 @@ function retrieveData(req, res, next) {
 function checkThresholds(value) {
   if (upperThreshold) {
     if (value >= upperThreshold) {
-      message.sendMessage()
+      message.sendMessage();
     }
   }
   if (lowerThreshold) {
     if (value <= lowerThreshold) {
-      message.sendMessage()
+      message.sendMessage();
     }
   }
 }
