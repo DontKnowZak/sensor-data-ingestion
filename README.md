@@ -18,4 +18,4 @@ In order to use up this project you will need to have installed Node.js, if that
 
 You will need to install rethinkdb (https://www.rethinkdb.com/) and then run ```rethinkdb```, as long as its locally hosted and listening for client driver connections on port 28015 you're good to go, if either of those variables differ then they can be changed in the config.js file accordingly.
 
-Lastly if you want to use the sms branch you must sign up at (https://www.twilio.com/). Then create a .env file (dotenv should already be installed via npm install) and add your Twilio Account SID, Auth Token and Twilio phone number. Finally input the number
+Lastly if you want to use the sms branch you must sign up at (https://www.twilio.com/). Then create a .env file (dotenv should already be installed via npm install) and add the following fields TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER and the RECIPIENT_PHONE_NUMBER.
