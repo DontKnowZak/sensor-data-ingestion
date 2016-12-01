@@ -8,7 +8,6 @@ var r = require("rethinkdb");
 var config = require("./config.js");
 var bodyParser = require("body-parser");
 var validate = require("express-validation");
-// var message = require("./messageHandler.js");
 var lowerThreshold = 0;
 var upperThreshold = 10;
 
@@ -66,12 +65,12 @@ function retrieveData(req, res, next) {
 function checkThresholds(value) {
   if (upperThreshold) {
     if (value >= upperThreshold) {
-      // message.sendMessage()
+
     }
   }
   if (lowerThreshold) {
     if (value <= lowerThreshold) {
-      // message.sendMessage()
+
     }
   }
 }
