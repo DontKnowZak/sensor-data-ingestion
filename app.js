@@ -2,26 +2,59 @@
 
 var async = require("async");
 var express = require("express");
+var validation = require("./validation");
 var app = express();
 var r = require("rethinkdb");
 var config = require("./config.js");
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
+var validate = require("express-validation");
+
 
 app.use(bodyParser.json());
 
-app.put("/data", insertInTable);
+app.put("/data", validate(validation.putData), insertInTable);
 
-function insertInTable(req, res, next) {
+app.get("/data", validate(validation.getData), retrieveData);
+
+function insertInTable(req, res) {
   var dataPoint = req.body;
 
   console.dir(dataPoint);
 
-  r.table('sensorDataPoints').insert(dataPoint, {returnChanges: true}).run(req.app._rdbConn, function(err, result) {
+  r.branch(
+    r.table("sensorDataPoints").filter({
+      sensorId: req.body.sensorId,
+      time: req.body.time,
+    }).isEmpty(),
+    r.table("sensorDataPoints").insert(dataPoint),
+    {}
+  ).run(req.app._rdbConn, function(err, result, next) {
+    if(err) {
+      return next(err);
+    }
+    if (result.generated_keys) {
+      res.sendStatus(204);
+    } else {
+      res.sendStatus(409);
+    }
+  });
+}
+
+function retrieveData(req, res, next) {
+  var response = [];
+  r.table("sensorDataPoints")
+    .between(0, 10,{rightBound: 'closed', index: "time"})
+    .filter(r.row("sensorId").eq("5"))
+  .run(req.app._rdbConn, function(err, cursor) {
     if(err) {
       return next(err);
     }
 
-    res.json(result.changes[0].new_val);
+    cursor.eachAsync(function (row) {
+      response.push(row);
+    }, function (final) {
+        res.json(response);
+    });
   });
 }
 
