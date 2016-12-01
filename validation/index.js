@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
-exports.getData = require('./getData');
-exports.putData = require('./putData');
+exports.getData = require("./getData");
+exports.putData = require("./putData");

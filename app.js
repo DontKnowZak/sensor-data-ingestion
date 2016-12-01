@@ -21,8 +21,6 @@ app.get("/data", validate(validation.getData), retrieveData);
 function insertInTable(req, res) {
   var dataPoint = req.body;
 
-  console.dir(dataPoint);
-
   r.branch(
     r.table("sensorDataPoints").filter({
       sensorId: req.body.sensorId,
@@ -48,9 +46,8 @@ function retrieveData(req, res, next) {
   var id = req.query.sensorId;
   var since = req.query.since;
   var until = req.query.until;
-  console.log(id + since + until)
   r.table("sensorDataPoints")
-    .between(since, until, {rightBound: 'closed', index: "time"})
+    .between(since, until, { rightBound: "closed", index: "time" })
     .filter(r.row("sensorId").eq(id))
   .run(req.app._rdbConn, function(err, cursor) {
     if(err) {
@@ -60,7 +57,7 @@ function retrieveData(req, res, next) {
     cursor.eachAsync(function (row, rowFinished) {
       responseData.push(row);
       rowFinished();
-    }, function (final) {
+    }, function () {
       res.json(responseData);
     });
   });
@@ -82,7 +79,6 @@ function checkThresholds(value) {
 function startExpress(connection) {
   app._rdbConn = connection;
   app.listen(3000);
-  console.log("Listening on port 3000");
 }
 
 async.waterfall([
@@ -113,7 +109,6 @@ async.waterfall([
   },
 ], function(err, connection) {
   if(err) {
-    console.error(err);
     process.exit(1);
     return;
   }
