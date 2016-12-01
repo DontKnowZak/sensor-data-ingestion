@@ -65,12 +65,12 @@ function retrieveData(req, res, next) {
 function checkThresholds(value) {
   if (upperThreshold) {
     if (value >= upperThreshold) {
-
+      // function to perform if upperThreshold
     }
   }
   if (lowerThreshold) {
     if (value <= lowerThreshold) {
-
+      // function to perform if lowerThreshold
     }
   }
 }
