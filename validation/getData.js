@@ -2,7 +2,7 @@
 var Joi = require('joi');
 
 module.exports = {
-  params: {
+  query: {
     sensorId: Joi.string(),
     since: Joi.number(),
     until: Joi.number(),

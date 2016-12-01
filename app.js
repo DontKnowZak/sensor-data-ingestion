@@ -8,7 +8,9 @@ var r = require("rethinkdb");
 var config = require("./config.js");
 var bodyParser = require("body-parser");
 var validate = require("express-validation");
-
+// var message = require("./messageHandler.js");
+var lowerThreshold = 0;
+var upperThreshold = 10;
 
 app.use(bodyParser.json());
 
@@ -34,6 +36,7 @@ function insertInTable(req, res) {
     }
     if (result.generated_keys) {
       res.sendStatus(204);
+      checkThresholds(req.body.value);
     } else {
       res.sendStatus(409);
     }
@@ -41,21 +44,39 @@ function insertInTable(req, res) {
 }
 
 function retrieveData(req, res, next) {
-  var response = [];
+  var responseData = [];
+  var id = req.query.sensorId;
+  var since = req.query.since;
+  var until = req.query.until;
+  console.log(id + since + until)
   r.table("sensorDataPoints")
-    .between(0, 10,{rightBound: 'closed', index: "time"})
-    .filter(r.row("sensorId").eq("5"))
+    .between(since, until, {rightBound: 'closed', index: "time"})
+    .filter(r.row("sensorId").eq(id))
   .run(req.app._rdbConn, function(err, cursor) {
     if(err) {
       return next(err);
     }
 
-    cursor.eachAsync(function (row) {
-      response.push(row);
+    cursor.eachAsync(function (row, rowFinished) {
+      responseData.push(row);
+      rowFinished();
     }, function (final) {
-        res.json(response);
+      res.json(responseData);
     });
   });
+}
+
+function checkThresholds(value) {
+  if (upperThreshold) {
+    if (value >= upperThreshold) {
+      // message.sendMessage()
+    }
+  }
+  if (lowerThreshold) {
+    if (value <= lowerThreshold) {
+      // message.sendMessage()
+    }
+  }
 }
 
 function startExpress(connection) {

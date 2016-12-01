@@ -2,3 +2,5 @@ node_modules
 *.log
 SPECIFICATION.md
 rethinkdb_data
+messageHandler.js
+.env
